@@ -39,6 +39,12 @@ body {
 }
 
 .e-btn-group.custom-rbt-group input:checked + label.e-btn {
-    background-color: #00c410;
-    color: #212b36;
-} 
+    background-color: #198754;
+    border-color: #198754;
+}
+
+/* Widget */
+.widget {
+    border-radius: 1rem;
+    background-color: #1a222b;
+}
