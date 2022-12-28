@@ -12,20 +12,22 @@
     <div class="col-md-4">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Title" class="control-label"></label>
-                <input asp-for="Title" class="form-control" />
+            <div class="mb-3">
+                <div class='e-btn-group custom-rbt-group'>
+                    <input type="radio" id="radioleft" name="Type" value="Expense" checked="@(Model.Type=="Expense")" />
+                    <label class="e-btn" for="radioleft">Expense</label>
+                    <input type="radio" id="radiomiddle" name="Type" value="Income" checked="@(Model.Type=="Expense")" />
+                    <label class="e-btn" for="radiomiddle">Income</label>
+                    <span asp-validation-for="Type" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="mb-3">
+                <ejs-textbox id="title" ejs-for="Title" placeholder="Title" value="Title" floatLabelType="Always"></ejs-textbox>
                 <span asp-validation-for="Title" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Icon" class="control-label"></label>
-                <input asp-for="Icon" class="form-control" />
+                <ejs-textbox id="icon" ejs-for="Icon" placeholder="Icon" value="Icon" floatLabelType="Always"></ejs-textbox>
                 <span asp-validation-for="Icon" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Type" class="control-label"></label>
-                <input asp-for="Type" class="form-control" />
-                <span asp-validation-for="Type" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
@@ -39,5 +41,7 @@
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }
