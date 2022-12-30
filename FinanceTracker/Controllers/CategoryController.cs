@@ -14,33 +14,12 @@ public class CategoryController : Controller
     // GET: Category
     public async Task<IActionResult> Index() => View(await _context.Category.ToListAsync());
 
-    // GET: Category/Details/5
-    public async Task<IActionResult> Details(int? id)
-    {
-        if (id == null || _context.Category == null)
-        {
-            return NotFound();
-        }
-
-        var category = await _context.Category
-            .FirstOrDefaultAsync(m => m.CategoryId == id);
-        if (category == null)
-        {
-            return NotFound();
-        }
-
-        return View(category);
-    }
-
     // GET: Category/Create
     public IActionResult Upsert(int id = 0)
     {
-        if (id == 0)
-        {
-            return View(new Category());
-        }
-
-        return View(_context.Category.Find(id));
+        return id == 0 
+            ? View(new Category()) 
+            : View(_context.Category.Find(id));
     }
 
     // POST: Category/Create
@@ -65,24 +44,6 @@ public class CategoryController : Controller
         return View(category);
     }
 
-    // GET: Category/Delete/5
-    public async Task<IActionResult> Delete(int? id)
-    {
-        if (id == null || _context.Category == null)
-        {
-            return NotFound();
-        }
-
-        var category = await _context.Category
-            .FirstOrDefaultAsync(m => m.CategoryId == id);
-        if (category == null)
-        {
-            return NotFound();
-        }
-
-        return View(category);
-    }
-
     // POST: Category/Delete/5
     [HttpPost, ActionName("Delete")]
     [ValidateAntiForgeryToken]
@@ -101,6 +62,4 @@ public class CategoryController : Controller
         await _context.SaveChangesAsync();
         return RedirectToAction(nameof(Index));
     }
-
-    private bool CategoryExists(int id) => _context.Category.Any(e => e.CategoryId == id);
 }
