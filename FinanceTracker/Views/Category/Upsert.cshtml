@@ -1,7 +1,7 @@
 ﻿@model FinanceTracker.Models.Category
 
 @{
-    
+    ViewData["PageTitle"] = Model.CategoryId == 0 ? "Create new category" : "Edit category";
 }
 
 <h1>Create</h1>

@@ -1,7 +1,9 @@
 ﻿@model IEnumerable<FinanceTracker.Models.Category>
 
 @{
-    
+    ViewData["PageTitle"] = "Categories";
+    ViewData["PageActionText"] = "+ New Category";
+    ViewData["PageActionUrl"] = "/Category/Upsert";
 }
 
 <div class="row">
