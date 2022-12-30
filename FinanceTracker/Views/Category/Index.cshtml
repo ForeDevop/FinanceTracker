@@ -6,11 +6,12 @@
 
 <div class="row">
     <div class="col-md-7">
-        <ejs-grid id="categories" dataSource="@Model" gridLines="None">
+        <ejs-grid id="categories" dataSource="@Model" gridLines="None" allowSorting="true" allowPaging="true">
+            <e-grid-pagesettings pageSize="5"></e-grid-pagesettings>
             <e-grid-columns>
                 <e-grid-column headerText="Category" field="TitleWithIcon"></e-grid-column>
-                <e-grid-column headerText="Type" template="#typeColumnTemplate"></e-grid-column>
-                <e-grid-column headerText="Action"></e-grid-column>
+                <e-grid-column headerText="Type" template="#typeColumnTemplate" width="150px"></e-grid-column>
+                <e-grid-column headerText="Action" template="#actionColumnTemplate" width="150px"></e-grid-column>
             </e-grid-columns>
 
         </ejs-grid>
@@ -28,4 +29,12 @@
     ${else}
         <span class="badge bg-danger">${Type}</span>
     ${/if}
+</script>
+
+<script id="actionColumnTemplate" type="text/x-template">
+    <div class="d-flex flex-row justify-content-start">
+        <a class="btn btn-sm no-a-decoration" href="/Category/Upsert/${CategoryId}">
+            <i class="fa-solid fa-pen fa-lg"></i>    
+        </a>
+    </div>
 </script>
