@@ -8,8 +8,8 @@
     <div class="col-md-7">
         <ejs-grid id="categories" dataSource="@Model" gridLines="None">
             <e-grid-columns>
-                <e-grid-column headerText="Category" field="Title"></e-grid-column>
-                <e-grid-column headerText="Type" field="Title"></e-grid-column>
+                <e-grid-column headerText="Category" field="TitleWithIcon"></e-grid-column>
+                <e-grid-column headerText="Type" template="#typeColumnTemplate"></e-grid-column>
                 <e-grid-column headerText="Action"></e-grid-column>
             </e-grid-columns>
 
@@ -21,3 +21,11 @@
         </div>
     </div>
 </div>
+
+<script id="typeColumnTemplate" type="text/x-template">
+    ${if (Type == "Income")}
+        <span class="badge bg-success">${Type}</span>
+    ${else}
+        <span class="badge bg-danger">${Type}</span>
+    ${/if}
+</script>

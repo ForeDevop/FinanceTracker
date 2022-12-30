@@ -16,4 +16,7 @@ public class Category
 
     [Column(TypeName = "nvarchar(20)")]
     public string Type { get; set; }
+
+    [NotMapped]
+    public string? TitleWithIcon => Icon + " " + Title;
 }
