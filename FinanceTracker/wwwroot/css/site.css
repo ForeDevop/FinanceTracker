@@ -23,6 +23,12 @@ body {
     font-size: x-large;
 }
 
+/* Breadcrumb */
+.e-breadcrumb a, .e-breadcrumb a:hover {
+    text-decoration: none !important;
+    color: inherit !important;
+}
+
 /* Grid */
 .e-grid {
     border: 0;
