@@ -27,7 +27,7 @@ public class TransactionController : Controller
     }
 
     // GET: Transaction/Upsert
-    public IActionResult Create()
+    public IActionResult Upsert()
     {
         ViewData["CategoryId"] = new SelectList(_context.Category, "CategoryId", "CategoryId");
         return View();
@@ -36,7 +36,7 @@ public class TransactionController : Controller
     // POST: Transaction/Upsert
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create([Bind("TransactionId,Amount,Note,Date,CategoryId")] Transaction transaction)
+    public async Task<IActionResult> Upsert([Bind("TransactionId,Amount,Note,Date,CategoryId")] Transaction transaction)
     {
         if (ModelState.IsValid)
         {
