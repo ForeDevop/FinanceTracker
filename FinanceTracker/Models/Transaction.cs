@@ -13,7 +13,7 @@ public class Transaction
     [Column(TypeName = "nvarchar(75)")]
     public string? Note { get; set; }
 
-    public DateTime Date { get; set; }
+    public DateTime Date { get; set; } = DateTime.Now;
 
     public int CategoryId { get; set; }
     public Category Category { get; set; }

@@ -29,7 +29,7 @@ public class TransactionController : Controller
     // GET: Transaction/Upsert
     public IActionResult Upsert()
     {
-        ViewData["CategoryId"] = new SelectList(_context.Category, "CategoryId", "CategoryId");
+        PopulateCategories();
         return View(new Transaction());
     }
 
@@ -62,8 +62,17 @@ public class TransactionController : Controller
         {
             _context.Transactions.Remove(transaction);
         }
-        
+
         await _context.SaveChangesAsync();
         return RedirectToAction(nameof(Index));
+    }
+
+    [NonAction]
+    public void PopulateCategories()
+    {
+        var categories = _context.Category.ToList();
+        Category defaultCategory = new() { CategoryId = 0, Title = "Choose a Category" };
+        categories.Insert(0, defaultCategory);
+        ViewBag.Categories = categories;
     }
 }
