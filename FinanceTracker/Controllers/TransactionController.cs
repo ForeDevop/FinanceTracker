@@ -27,10 +27,12 @@ public class TransactionController : Controller
     }
 
     // GET: Transaction/Upsert
-    public IActionResult Upsert()
+    public IActionResult Upsert(int id = 0)
     {
         PopulateCategories();
-        return View(new Transaction());
+        return id == 0
+            ? View(new Transaction())
+            : View(_context.Transactions.Find(id));
     }
 
     // POST: Transaction/Upsert
@@ -40,11 +42,19 @@ public class TransactionController : Controller
     {
         if (ModelState.IsValid)
         {
-            _context.Add(transaction);
+            if (transaction.TransactionId == 0)
+            {
+                _context.Add(transaction);
+            }
+            else
+            {
+                _context.Update(transaction);
+            }
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
-        ViewData["CategoryId"] = new SelectList(_context.Category, "CategoryId", "CategoryId", transaction.CategoryId);
+        PopulateCategories();
+
         return View(transaction);
     }
 
