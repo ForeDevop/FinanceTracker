@@ -16,5 +16,5 @@ public class Transaction
     public DateTime Date { get; set; } = DateTime.Now;
 
     public int CategoryId { get; set; }
-    public Category Category { get; set; }
+    public Category? Category { get; set; }
 }
