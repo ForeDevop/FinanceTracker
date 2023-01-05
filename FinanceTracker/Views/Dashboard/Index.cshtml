@@ -4,3 +4,17 @@
 @{
     ViewData["isDashboard"] = true;
 }
+
+@* Summary Widgets *@
+<div class="row-mb-4">
+    <div class="d-flex flex-row widget summary income">
+        <div class="d-flex flex-colum justify-content-center p-5">
+            <i class="fa-solid fa-ruble-sign fa-2xl"></i>
+        </div>
+
+        <div class="d-flex flex-colum m-auto py-3">
+            <span class="lead">Total Income</span>
+            <h1 class="display-6 fw-bold">@ViewBag.TotalIncome</h1>
+        </div>
+    </div>
+</div>
