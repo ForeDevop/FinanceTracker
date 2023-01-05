@@ -17,4 +17,12 @@ public class Transaction
 
     public int CategoryId { get; set; }
     public Category? Category { get; set; }
+
+    [NotMapped]
+    public string? CategoryTitleWithIcon => 
+        Category == null ? "" : Category.Icon + " " + Category.Title;
+
+    [NotMapped]
+    public string? FormattedAmount => 
+        ((Category == null || Category.Type == "Expense") ? "- " : "+ ") + Amount.ToString("C0");
 }
