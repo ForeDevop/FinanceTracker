@@ -22,6 +22,7 @@ public class DashboardController : Controller
             .Where(c => c.Date > startDate && c.Date <= endDate)
             .ToListAsync();
 
+        #region Income, Expense, Balance
         var totalIncome = selectedTransactions
             .Where(t => t.Category.Type == "Income")
             .Sum(i => i.Amount);
@@ -36,6 +37,20 @@ public class DashboardController : Controller
         var culture = CultureInfo.CreateSpecificCulture("ru");
         culture.NumberFormat.CurrencyNegativePattern = 1;
         ViewBag.Balance = string.Format(culture, "{0:C0}", balance);
+        #endregion
+
+        var donutChart = selectedTransactions
+           .Where(i => i.Category.Type == "Expense")
+           .GroupBy(j => j.Category.CategoryId)
+           .Select(a => new
+           {
+               categoryTitleWithIcon = $"{a.First().Category.Icon} {a.First().Category.Title}",
+               amount = a.Sum(k => k.Amount),
+               text = a.Sum(k => k.Amount).ToString("C0"),
+           })
+           .ToList();
+
+        ViewBag.DonutChart = donutChart;
 
         return View();
     }
