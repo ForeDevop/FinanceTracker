@@ -59,7 +59,7 @@
                     <e-accumulation-series dataSource="@ViewBag.DonutChart" innerRadius="60%" name="Expense"
                                            xName="categoryTitleWithIcon" yName="amount" legendShape="Circle">
 
-                        <e-accumulationseries-datalabel name="text" visible>
+                        <e-accumulationseries-datalabel name="labelText" visible>
                         </e-accumulationseries-datalabel>
                     </e-accumulation-series>
                 </e-accumulation-series-collection>
@@ -71,5 +71,33 @@
         </div>
     </div>
 
-    
+    <div class="col-md-8">
+        <div class="widget chart">
+            <div class="p-4">
+                <h5 class="fw-bold">Cash flow</h5>
+            </div>
+            <ejs-chart id="splinechart" background="#1a222b">
+                <e-chart-primaryxaxis valuetype="Category">
+                    <e-majorgridlines width="0"></e-majorgridlines>
+                    <e-majorticklines width="0"></e-majorticklines>
+                </e-chart-primaryxaxis>
+
+                <e-chart-primaryyaxis>
+                    <e-majorgridlines width="1" color="#32414d" dashArray="3,5"></e-majorgridlines>
+                    <e-majorticklines width="0"></e-majorticklines>
+                </e-chart-primaryyaxis>
+
+                <e-chart-chartarea>
+                    <e-chartarea-border width="0"></e-chartarea-border>
+                </e-chart-chartarea>
+
+                <e-series-collection>
+                    <e-series dataSource="@ViewBag.SplineChart" xName="Day" yName="Income"
+                              name="Income" type="@Syncfusion.EJ2.Charts.ChartSeriesType.Spline"></e-series>
+                    <e-series dataSource="@ViewBag.SplineChart" xName="Day" yName="Expense"
+                              name="Expense" type="@Syncfusion.EJ2.Charts.ChartSeriesType.Spline"></e-series>
+                </e-series-collection>
+            </ejs-chart>
+        </div>
+    </div>
 </div>
