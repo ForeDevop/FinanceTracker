@@ -1,6 +1,7 @@
 ﻿using FinanceTracker.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Globalization;
 
 namespace FinanceTracker.Controllers;
 
@@ -31,8 +32,10 @@ public class DashboardController : Controller
             .Sum(e => e.Amount);
         ViewBag.TotalExpense = totalExpense.ToString("C0");
 
-        var balance  = totalIncome - totalExpense;
-        ViewBag.Balance = balance.ToString();
+        var balance = totalIncome - totalExpense;
+        var culture = CultureInfo.CreateSpecificCulture("ru");
+        culture.NumberFormat.CurrencyNegativePattern = 1;
+        ViewBag.Balance = string.Format(culture, "{0:C0}", balance);
 
         return View();
     }
