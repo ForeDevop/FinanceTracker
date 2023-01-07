@@ -47,7 +47,7 @@
     </div>
 </div>
 
-@* Donut and Spline charts *@
+@* Donut chart *@
 <div class="col-mb-4">
     <div class="col-md-4">
         <div class="widget chart">
@@ -57,9 +57,9 @@
             <ejs-accumulationchart id="donutchart" enableSmartLabels background="#1a222b">
                 <e-accumulation-series-collection>
                     <e-accumulation-series dataSource="@ViewBag.DonutChart" innerRadius="60%" name="Expense"
-                                           xName="categoryTitleWithIcon" yName="amount" legendShape="Circle">
+                                           xName="CategoryTitleWithIcon" yName="Amount" legendShape="Circle">
 
-                        <e-accumulationseries-datalabel name="labelText" visible>
+                        <e-accumulationseries-datalabel name="LabelText" visible>
                         </e-accumulationseries-datalabel>
                     </e-accumulation-series>
                 </e-accumulation-series-collection>
@@ -70,7 +70,7 @@
             </ejs-accumulationchart>
         </div>
     </div>
-
+    @* Spline chart *@
     <div class="col-md-8">
         <div class="widget chart">
             <div class="p-4">
