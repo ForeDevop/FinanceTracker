@@ -6,7 +6,7 @@ public class SplineChart
     public int Income { get; set; }
     public int Expense { get; set; }
 
-    public static List<SplineChart> GetSplineChartPoints(string categoryType, List<Transaction> selectedTransactions)
+    private static List<SplineChart> GetSplineChartPoints(string categoryType, List<Transaction> selectedTransactions)
     {
         var transactionsByDate = selectedTransactions
             .Where(i => i.Category.Type == categoryType)
@@ -22,7 +22,7 @@ public class SplineChart
         }
     }
 
-    public static List<SplineChart> GetIncomeSplineChartPoints(IEnumerable<IGrouping<DateTime, Transaction>> transactionsByDate)
+    private static List<SplineChart> GetIncomeSplineChartPoints(IEnumerable<IGrouping<DateTime, Transaction>> transactionsByDate)
     {
         return transactionsByDate.Select(k => new SplineChart
         {
@@ -32,7 +32,7 @@ public class SplineChart
         .ToList();
     }
 
-    public static List<SplineChart> GetExpenseSplineChartPoints(IEnumerable<IGrouping<DateTime, Transaction>> transactionsByDate)
+    private static List<SplineChart> GetExpenseSplineChartPoints(IEnumerable<IGrouping<DateTime, Transaction>> transactionsByDate)
     {
         return transactionsByDate.Select(k => new SplineChart
         {
@@ -42,7 +42,7 @@ public class SplineChart
         .ToList();
     }
 
-    public static string[] GetLastWeekCaptions()
+    private static string[] GetLastWeekCaptions()
     {
         int DaysOfWeek = 7;
         DateTime startDate = DateTime.Today.AddDays(-DaysOfWeek);
