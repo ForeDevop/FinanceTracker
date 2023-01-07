@@ -18,22 +18,15 @@ public class DashboardController : Controller
     {
         var selectedTransactions = await GetSelectedTransactions();
 
-        #region Income, Expense, Balance Labels
         var totalIncome = GetTotal("Income", selectedTransactions);
         var totalExpense = GetTotal("Expense", selectedTransactions);
 
         ViewBag.TotalIncome = totalIncome.ToString("C0");
         ViewBag.TotalExpense = totalExpense.ToString("C0");
         ViewBag.Balance = GetBalance(totalIncome, totalExpense);
-        #endregion
 
-        #region Income / Expense Charts
-        var incomeChartPoints = SplineChart.GetSplineChartPoints("Income", selectedTransactions);
-        var expenseChartPoints = SplineChart.GetSplineChartPoints("Expense", selectedTransactions);
-
-        ViewBag.SplineChart = SplineChart.GetSplineChart(incomeChartPoints, expenseChartPoints);
+        ViewBag.SplineChart = SplineChart.GetSplineChart(selectedTransactions);
         ViewBag.DonutChart = DonutChart.GetDonutChart(selectedTransactions);
-        #endregion
 
         return View();
     }
@@ -110,9 +103,9 @@ public class SplineChart
         }
     }
 
-    public static List<SplineChart> GetIncomeSplineChartPoints(IEnumerable<IGrouping<DateTime, Transaction>> selectedTransactions)
+    public static List<SplineChart> GetIncomeSplineChartPoints(IEnumerable<IGrouping<DateTime, Transaction>> transactionsByDate)
     {
-        return selectedTransactions.Select(k => new SplineChart
+        return transactionsByDate.Select(k => new SplineChart
         {
             Day = k.First().Date.ToString("dd-MMM"),
             Income = k.Sum(l => l.Amount),
@@ -120,9 +113,9 @@ public class SplineChart
         .ToList();
     }
 
-    public static List<SplineChart> GetExpenseSplineChartPoints(IEnumerable<IGrouping<DateTime, Transaction>> selectedTransactions)
+    public static List<SplineChart> GetExpenseSplineChartPoints(IEnumerable<IGrouping<DateTime, Transaction>> transactionsByDate)
     {
-        return selectedTransactions.Select(k => new SplineChart
+        return transactionsByDate.Select(k => new SplineChart
         {
             Day = k.First().Date.ToString("dd-MMM"),
             Expense = k.Sum(l => l.Amount),
@@ -140,10 +133,10 @@ public class SplineChart
             .ToArray();
     }
 
-    public static IEnumerable<SplineChart> GetSplineChart(List<SplineChart> incomePoints, List<SplineChart> expensePoints)
+    public static IEnumerable<SplineChart> GetSplineChart(List<Transaction> selectedTransactions)
     {
-        var incomePoints = GetIncomeSplineChartPoints(selectedTransactions);
-        var expensePoints = GetExpenseSplineChartPoints(selectedTransactions);
+        var incomePoints = GetSplineChartPoints("Income", selectedTransactions);
+        var expensePoints = GetSplineChartPoints("Expense", selectedTransactions);
 
         return from day in GetLastWeekCaptions()
                join income in incomePoints on day equals income.Day into dayIncomeJoined
@@ -157,6 +150,4 @@ public class SplineChart
                    Expense = expense == null ? 0 : expense.Expense,
                };
     }
-
-
 }
