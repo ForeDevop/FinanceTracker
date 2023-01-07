@@ -3,16 +3,13 @@ using FinanceTracker.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Globalization;
 
 namespace FinanceTracker.Controllers;
 
 public class DashboardController : Controller
 {
-    const int DaysOfWeek = 7;
-    DateTime startDate = DateTime.Today.AddDays(-DaysOfWeek);
-    DateTime endDate = DateTime.Today;
-
     private readonly ApplicationDbContext _context;
 
     public DashboardController(ApplicationDbContext context) => _context = context;
@@ -23,25 +20,19 @@ public class DashboardController : Controller
 
         #region Income, Expense, Balance Labels
         var totalIncome = GetTotal("Income", selectedTransactions);
-        ViewBag.TotalIncome = totalIncome.ToString("C0");
-
         var totalExpense = GetTotal("Expense", selectedTransactions);
-        ViewBag.TotalExpense = totalExpense.ToString("C0");
 
-        SetBalance(totalIncome, totalExpense);
+        ViewBag.TotalIncome = totalIncome.ToString("C0");
+        ViewBag.TotalExpense = totalExpense.ToString("C0");
+        ViewBag.Balance = GetBalance(totalIncome, totalExpense);
         #endregion
 
         #region Income / Expense Charts
-        ViewBag.DonutChart = DonutChart.GetDonutChart(selectedTransactions);
-
         var incomeChartPoints = SplineChart.GetSplineChartPoints("Income", selectedTransactions);
         var expenseChartPoints = SplineChart.GetSplineChartPoints("Expense", selectedTransactions);
 
-        var lastWeekCaptions = Enumerable.Range(0, DaysOfWeek)
-            .Select(i => startDate.AddDays(i).ToString("dd-MMM"))
-            .ToArray();
-
-        ViewBag.SplineChart = SplineChart.GetSplineChart(incomeChartPoints, expenseChartPoints, lastWeekCaptions);
+        ViewBag.SplineChart = SplineChart.GetSplineChart(incomeChartPoints, expenseChartPoints);
+        ViewBag.DonutChart = DonutChart.GetDonutChart(selectedTransactions);
         #endregion
 
         return View();
@@ -49,6 +40,10 @@ public class DashboardController : Controller
 
     public async Task<List<Transaction>> GetSelectedTransactions()
     {
+        const int DaysOfWeek = 7;
+        DateTime startDate = DateTime.Today.AddDays(-DaysOfWeek);
+        DateTime endDate = DateTime.Today;
+
         return await _context.Transactions
             .Include(t => t.Category)
             .Where(c => c.Date > startDate && c.Date <= endDate)
@@ -62,12 +57,12 @@ public class DashboardController : Controller
             .Sum(i => i.Amount);
     }
 
-    public void SetBalance(int income, int expense)
+    public string GetBalance(int income, int expense)
     {
         var balance = income - expense;
         var culture = CultureInfo.CreateSpecificCulture("ru");
         culture.NumberFormat.CurrencyNegativePattern = 1;
-        ViewBag.Balance = string.Format(culture, "{0:C0}", balance);
+        return string.Format(culture, "{0:C0}", balance);
     }
 }
 
@@ -115,9 +110,9 @@ public class SplineChart
         }
     }
 
-    public static List<SplineChart> GetIncomeSplineChartPoints(IEnumerable<IGrouping<DateTime, Transaction>> transactionsByDate)
+    public static List<SplineChart> GetIncomeSplineChartPoints(IEnumerable<IGrouping<DateTime, Transaction>> selectedTransactions)
     {
-        return transactionsByDate.Select(k => new SplineChart
+        return selectedTransactions.Select(k => new SplineChart
         {
             Day = k.First().Date.ToString("dd-MMM"),
             Income = k.Sum(l => l.Amount),
@@ -125,30 +120,42 @@ public class SplineChart
         .ToList();
     }
 
-    public static List<SplineChart> GetExpenseSplineChartPoints(IEnumerable<IGrouping<DateTime, Transaction>> transactionsByDate)
+    public static List<SplineChart> GetExpenseSplineChartPoints(IEnumerable<IGrouping<DateTime, Transaction>> selectedTransactions)
     {
-        return transactionsByDate.Select(k => new SplineChart
+        return selectedTransactions.Select(k => new SplineChart
         {
             Day = k.First().Date.ToString("dd-MMM"),
-            Income = k.Sum(l => l.Amount),
+            Expense = k.Sum(l => l.Amount),
         })
         .ToList();
     }
 
-    public static IEnumerable<SplineChart> GetSplineChart(List<SplineChart> incomePoints, List<SplineChart> expensePoints, string[] dayCaptions)
+    public static string[] GetLastWeekCaptions()
     {
+        int DaysOfWeek = 7;
+        DateTime startDate = DateTime.Today.AddDays(-DaysOfWeek);
 
-        return from day in dayCaptions
-                          join income in incomePoints on day equals income.Day into dayIncomeJoined
-                          from income in dayIncomeJoined.DefaultIfEmpty()
-                          join expense in expensePoints on day equals expense.Day into dayExpenseJoined
-                          from expense in dayExpenseJoined.DefaultIfEmpty()
-                          select new SplineChart
-                          {
-                              Day = day,
-                              Income = income == null ? 0 : income.Income,
-                              Expense = expense == null ? 0 : expense.Expense,
-                          };
+        return Enumerable.Range(0, DaysOfWeek)
+            .Select(i => startDate.AddDays(i).ToString("dd-MMM"))
+            .ToArray();
+    }
+
+    public static IEnumerable<SplineChart> GetSplineChart(List<SplineChart> incomePoints, List<SplineChart> expensePoints)
+    {
+        var incomePoints = GetIncomeSplineChartPoints(selectedTransactions);
+        var expensePoints = GetExpenseSplineChartPoints(selectedTransactions);
+
+        return from day in GetLastWeekCaptions()
+               join income in incomePoints on day equals income.Day into dayIncomeJoined
+               from income in dayIncomeJoined.DefaultIfEmpty()
+               join expense in expensePoints on day equals expense.Day into dayExpenseJoined
+               from expense in dayExpenseJoined.DefaultIfEmpty()
+               select new SplineChart
+               {
+                   Day = day,
+                   Income = income == null ? 0 : income.Income,
+                   Expense = expense == null ? 0 : expense.Expense,
+               };
     }
 
 
