@@ -12,14 +12,9 @@ public class SplineChart
             .Where(i => i.Category.Type == categoryType)
             .GroupBy(j => j.Date);
 
-        if (categoryType == "Income")
-        {
-            return GetIncomeSplineChartPoints(transactionsByDate);
-        }
-        else
-        {
-            return GetExpenseSplineChartPoints(transactionsByDate);
-        }
+        return categoryType == "Income" 
+            ? GetIncomeSplineChartPoints(transactionsByDate) 
+            : GetExpenseSplineChartPoints(transactionsByDate);
     }
 
     private static List<SplineChart> GetIncomeSplineChartPoints(IEnumerable<IGrouping<DateTime, Transaction>> transactionsByDate)
@@ -44,7 +39,7 @@ public class SplineChart
 
     private static string[] GetLastWeekCaptions()
     {
-        int DaysOfWeek = 7;
+        const int DaysOfWeek = 7;
         DateTime startDate = DateTime.Today.AddDays(-DaysOfWeek);
 
         return Enumerable.Range(0, DaysOfWeek)
