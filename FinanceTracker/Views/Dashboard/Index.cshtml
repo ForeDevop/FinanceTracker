@@ -4,7 +4,7 @@
 
 @* Summary Widgets *@
 
-<div class="row-mb-4">
+<div class="row">
     <div class="col-md-4">
         <div class="d-flex flex-row widget summary income">
             <div class="d-flex flex-colum justify-content-center p-5">
@@ -45,9 +45,10 @@
     </div>
 </div>
 
-<!--TODO: Balance-->
-<div class="col-mb-4">
+<br />
 
+<!--TODO: Balance-->
+<div class="row">
     @* Donut chart *@
     <div class="col-md-4">
         <div class="widget chart">
@@ -118,7 +119,10 @@
     </div>
 </div>
 
+<br />
+
 <div class="row">
+    @* Recent Income *@
     <div class="col-md-6">
         <div class="widget">
             <div class="p-4">
@@ -134,6 +138,15 @@
                                        textAlign="Right"></e-grid-column>
                     </e-grid-columns>
                 </ejs-grid>
+            </div>
+        </div>
+    </div>
+
+    @* Recent Expense *@
+    <div class="col-md-6">
+        <div class="widget h-100">
+            <div class="d-flex justify-content-center align-items-center">
+                <span><i class="fa-solid fa-plus fa-2xl"></i> Widget</span>
             </div>
         </div>
     </div>
