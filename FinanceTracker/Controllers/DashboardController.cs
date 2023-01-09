@@ -26,12 +26,23 @@ public class DashboardController : Controller
         ViewBag.SplineChart = SplineChart.GetSplineChart(selectedTransactions);
         ViewBag.DonutChart = DonutChart.GetDonutChart(selectedTransactions);
 
+        ViewBag.RecentTransactions = await GetRecentTransactions();
+
         return View();
+    }
+
+    public async Task<List<Transaction>> GetRecentTransactions()
+    {
+        return await _context.Transactions
+            .Include(t => t.Category)
+            .OrderByDescending(c => c.Date)
+            .Take(5)
+            .ToListAsync();
     }
 
     public async Task<List<Transaction>> GetSelectedTransactions()
     {
-        int DaysOfWeek = 7;
+        const int DaysOfWeek = 7;
         DateTime startDate = DateTime.Today.AddDays(-DaysOfWeek);
         DateTime endDate = DateTime.Today;
 
