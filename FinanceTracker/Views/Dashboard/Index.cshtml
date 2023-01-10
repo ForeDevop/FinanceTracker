@@ -47,7 +47,6 @@
 
 <br />
 
-<!--TODO: Balance-->
 <div class="row">
     @* Donut chart *@
     <div class="col-md-4">
@@ -57,7 +56,7 @@
             </div>
             <ejs-accumulationchart id="donutchart" enableSmartLabels background="#1a222b">
                 <e-accumulation-series-collection>
-                    <e-accumulation-series dataSource="@ViewBag.DonutChart" innerRadius="60%" name="Expense"
+                    <e-accumulation-series dataSource="@ViewBag.DonutChart" innerRadius="50%" name="Expense"
                                            xName="CategoryTitleWithIcon" yName="Amount" legendShape="Circle"
                                            palettes=@(new string[]
                                            {
