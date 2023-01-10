@@ -16,57 +16,60 @@
 
     <partial name="_SideBar" />
 
-    <nav class="navbar sticky-top">
-        <div class="container-fluid py-2 px-4">
-            <i class="fa-solid fa-magnifying-glass"></i>
-            <div>
-                <i class="fa-solid fa-bell"></i>
-                <i class="fa-solid fa-message"></i>
-                <img class="profile-pic" src="profile.jpg" />
+    <div class="dock-target">
+        <nav class="navbar sticky-top">
+            <div class="container-fluid py-2 px-4">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <div>
+                    <i class="fa-solid fa-bell"></i>
+                    <i class="fa-solid fa-message"></i>
+                    <img class="profile-pic" src="profile.jpg" />
+                </div>
             </div>
-        </div>
-    </nav>
+        </nav>
 
-    <div class="main-content">
-        <div class="container mt-5">
-            <div class="row justify-content-center">
-                <div class="(@ViewData["isDashboard"] == null ? " col-md-10" : "col-md-12" )">
-                    <main role="main" class="pb-3">
-                        @if (ViewData["isDashboard"] == null)
-                        {
+        <div class="main-content">
+            <div class="container mt-5">
+                <div class="row justify-content-center">
+                    <div class="(@ViewData["isDashboard"] == null ? " col-md-10" : "col-md-12" )">
+                        <main role="main" class="pb-3">
+                            @if (ViewData["isDashboard"] == null)
+                            {
                             <div class="row">
-                            <div class="col-md-7">
-                                <div class="d-flex flex-column mb-5">
-                                    <div class="d-flex mb-1">
-                                        <div class="flex-grow-1">
-                                            <h3 class="fw-bold">@ViewData["PageTitle"]</h3>
+                                <div class="col-md-7">
+                                    <div class="d-flex flex-column mb-5">
+                                        <div class="d-flex mb-1">
+                                            <div class="flex-grow-1">
+                                                <h3 class="fw-bold">@ViewData["PageTitle"]</h3>
+                                            </div>
+                                            <div>
+                                                @if (ViewData["PageActionText"] != null)
+                                                {
+                                                <a class="btn btn-success" href="@ViewData["PageActionUrl"]">
+                                                    @ViewData["PageActionText"]
+                                                </a>
+                                                }
+                                            </div>
                                         </div>
-                                        <div>
-                                            @if (ViewData["PageActionText"] != null)
-                                            {
-                                            <a class="btn btn-success" href="@ViewData["PageActionUrl"]">
-                                                @ViewData["PageActionText"]
-                                            </a>
-                                            }
-                                        </div>
+                                        <ejs-breadcrumb id="breadcrumb"></ejs-breadcrumb>
                                     </div>
-                                    <ejs-breadcrumb id="breadcrumb"></ejs-breadcrumb>
                                 </div>
                             </div>
-                        </div>
-                        }
-                        @RenderBody()
-                    </main>
+                            }
+                            @RenderBody()
+                        </main>
+                    </div>
                 </div>
             </div>
         </div>
+
     </div>
     <!-- Syncfusion ASP.NET Core controls scripts -->
     <script src="https://cdn.syncfusion.com/ej2/20.4.38/dist/ej2.min.js"></script>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
-                    @await RenderSectionAsync("Scripts", required: false)
+                        @await RenderSectionAsync("Scripts", required: false)
     <!-- Syncfusion Script Manager -->
     <ejs-scripts></ejs-scripts>
 </body>
