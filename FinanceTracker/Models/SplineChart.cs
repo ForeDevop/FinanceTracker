@@ -39,10 +39,10 @@ public class SplineChart
 
     private static string[] GetLastWeekCaptions()
     {
-        const int DaysOfWeek = 7;
-        DateTime startDate = DateTime.Today.AddDays(-DaysOfWeek);
+        int DaysOfMonth = 30;
+        DateTime startDate = DateTime.Today.AddDays(-DaysOfMonth);
 
-        return Enumerable.Range(0, DaysOfWeek)
+        return Enumerable.Range(0, DaysOfMonth)
             .Select(i => startDate.AddDays(i).ToString("dd-MMM"))
             .ToArray();
     }

@@ -42,8 +42,8 @@ public class DashboardController : Controller
 
     public async Task<List<Transaction>> GetSelectedTransactions()
     {
-        const int DaysOfWeek = 7;
-        DateTime startDate = DateTime.Today.AddDays(-DaysOfWeek);
+        int DaysOfMonth = 30;
+        DateTime startDate = DateTime.Today.AddDays(-DaysOfMonth);
         DateTime endDate = DateTime.Today;
 
         return await _context.Transactions
