@@ -16,4 +16,8 @@
     <PackageReference Include="Syncfusion.EJ2.AspNet.Core" Version="20.4.0.38" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\cldr-data\supplemental\" />
+  </ItemGroup>
+
 </Project>

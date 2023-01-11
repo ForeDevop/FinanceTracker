@@ -30,11 +30,11 @@
                     </ejs-dropdownlist>
                     <span asp-validation-for="CategoryId" class="text-danger fs-6"></span>
                 </div>
-                <!-- Fix the currency -->
+
                 <div class="mb-3">
                     <ejs-numerictextbox id="amount" ejs-for="Amount"
-                                        placeholder="Amount" floatLabelType="Always"
-                                        min=0 max=2_147_483_647 format="C0" currency="RUB">
+                                        placeholder="Amount (RUB)" floatLabelType="Always"
+                                        min=0 max=2_147_483_647 format="N0">
                     </ejs-numerictextbox>
                     <span asp-validation-for="Amount" class="text-danger fs-6"></span>
                 </div>
