@@ -22,6 +22,7 @@ public class TransactionController : Controller
     public IActionResult Upsert(int id = 0)
     {
         PopulateCategories();
+
         return id == 0
             ? View(new Transaction())
             : View(_context.Transactions.Find(id));
@@ -32,22 +33,23 @@ public class TransactionController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Upsert([Bind("TransactionId,Amount,Note,Date,CategoryId")] Transaction transaction)
     {
-        if (ModelState.IsValid)
+        if (!ModelState.IsValid)
         {
-            if (transaction.TransactionId == 0)
-            {
-                _context.Add(transaction);
-            }
-            else
-            {
-                _context.Update(transaction);
-            }
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
-        PopulateCategories();
+            PopulateCategories();
 
-        return View(transaction);
+            return View(transaction);
+        }
+
+        if (transaction.TransactionId == 0)
+        {
+            _context.Add(transaction);
+        }
+        else
+        {
+            _context.Update(transaction);
+        }
+        await _context.SaveChangesAsync();
+        return RedirectToAction(nameof(Index));
     }
 
     // POST: Transaction/Delete/5
