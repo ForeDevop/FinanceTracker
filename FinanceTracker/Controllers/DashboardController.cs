@@ -31,27 +31,6 @@ public class DashboardController : Controller
         return View();
     }
 
-    public async Task<List<Transaction>> GetRecentTransactions()
-    {
-        return await _context.Transactions
-            .Include(t => t.Category)
-            .OrderByDescending(c => c.Date)
-            .Take(5)
-            .ToListAsync();
-    }
-
-    public async Task<List<Transaction>> GetSelectedTransactions()
-    {
-        int DaysOfMonth = 30;
-        DateTime startDate = DateTime.Today.AddDays(-DaysOfMonth);
-        DateTime endDate = DateTime.Today;
-
-        return await _context.Transactions
-            .Include(t => t.Category)
-            .Where(c => c.Date > startDate && c.Date <= endDate)
-            .ToListAsync();
-    }
-
     public int GetTotal(string categoryType, List<Transaction> selectedTransactions)
     {
         return selectedTransactions
@@ -66,5 +45,26 @@ public class DashboardController : Controller
 
         culture.NumberFormat.CurrencyNegativePattern = 1;
         return string.Format(culture, "{0:C0}", balance);
+    }
+
+    public async Task<List<Transaction>> GetSelectedTransactions()
+    {
+        int DaysOfMonth = 30;
+        DateTime startDate = DateTime.Today.AddDays(-DaysOfMonth);
+        DateTime endDate = DateTime.Today;
+
+        return await _context.Transactions
+            .Include(t => t.Category)
+            .Where(c => c.Date > startDate && c.Date <= endDate)
+            .ToListAsync();
+    }
+
+    public async Task<List<Transaction>> GetRecentTransactions()
+    {
+        return await _context.Transactions
+            .Include(t => t.Category)
+            .OrderByDescending(c => c.Date)
+            .Take(5)
+            .ToListAsync();
     }
 }
