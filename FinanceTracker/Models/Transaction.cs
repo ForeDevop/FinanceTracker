@@ -22,9 +22,9 @@ public class Transaction
 
     [NotMapped]
     public string? CategoryTitleWithIcon => 
-        Category == null ? "" : Category.Icon + " " + Category.Title;
+        Category is null ? "" : Category.Icon + " " + Category.Title;
 
     [NotMapped]
     public string? FormattedAmount => 
-        ((Category == null || Category.Type == "Expense") ? "- " : "+ ") + Amount.ToString("C0");
+        ((Category is null || Category.Type is "Expense") ? "- " : "+ ") + Amount.ToString("C0");
 }
